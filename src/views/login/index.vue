@@ -127,34 +127,33 @@ export default {
       });
     },
     handleLogin() {
-      this.Admin.Admin_Account = this.loginForm.username;
-      this.Admin.Admin_PassWord = this.loginForm.password;
-      LoginManager(this.Admin).then((response) => {
-        console.log(response.msg);
-        console.log(response);
-        if (response.msg === "True") {
-          localStorage.setItem("username", this.loginForm.username);
-          this.$router.push({ path: "/daohang/daohang" });
+      debugger;
+      this.$refs.loginForm.validate((valid) => {
+        debugger;
+        if (valid) {
+          this.loading = true;
+          debugger;
+          this.$store
+            .dispatch("user/login", this.loginForm)
+            .then(() => {
+              debugger;
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
-          this.$message.error("账号或密码错误");
+          console.log("error submit!!");
+          return false;
         }
-
-        // if (response.msg === "True") {
-        //   // console.log('成功');
-        //   // localStorage.setItem("username", this.loginForm.username);
-        //   // this.$router.push({ path: "/dashboard/dashboard" });
-        // } else {
-        //   this.$message.error("账号或密码错误");
-        // }
       });
     },
   },
 };
 </script>
 
-<style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+<style lang="scss"> 
 
 $bg: #283443;
 $light_gray: #fff;

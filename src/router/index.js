@@ -2,51 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-
-/* Layout */
+ 
 import Layout from '@/layout'
-
-/**
- * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
- *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
- * name:'router-name'             the name is used by <keep-alive> (must set!!!)
- * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
- */
-
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- */
+ 
 export const constantRoutes = [
   {
-    path: '/',
+    path: '/login',
     component: () => import('@/views/login/index'),
-    name: "Login",
     hidden: true
   },
-
-
-  // {
-  //   path: '/',
-  //   component: () => import('@/views/daohang/index'),
-  //   name: "Login",
-  //   hidden: true
-  // },
-
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -54,7 +18,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/daohang',
+    path: '/',
     component: Layout,
     redirect: '/daohang',
     children: [
@@ -62,10 +26,21 @@ export const constantRoutes = [
         path: 'daohang',
         component: () => import('@/views/daohang/index'),
         name: '',
-        meta: { title: 'daohang', icon: 'el-icon-user-solid', affix: true, requireAuth: true }
+        meta: { title: 'daohang', icon: 'el-icon-user-solid' }
       }
     ]
   },
+  // {
+  //   path: '/daohang',
+  //   component: Layout,
+  //   redirect: '/daohang',
+  //   children: [{
+  //     path: 'daohang',
+  //     name: 'daohang',
+  //     component: () => import('@/views/daohang/index'),
+  //     meta: { title: 'daohang', icon: 'dashboard' }
+  //   }]
+  // },
 
   {
     path: '/example',
@@ -187,19 +162,19 @@ export function resetRouter() {
   router.matcher = newRouter.matcher // reset router
 }
 
-router.beforeEach(async(to, from, next) => {
-    if (to.matched.some(res => res.meta.requireAuth)) {
-      if (localStorage.getItem('username')) {
-        next()
-      } else {
-        next({
-          path: '/',
-          query: { redirect: to.fullPath }
-        })
-      }
-    } else {
-      next()
-    }
-  })
+// router.beforeEach(async(to, from, next) => {
+//     if (to.matched.some(res => res.meta.requireAuth)) {
+//       if (localStorage.getItem('username')) {
+//         next()
+//       } else { 
+//         next({
+//           path: '/',
+//           query: { redirect: to.fullPath }
+//         })
+//       }
+//     } else {
+//       next()
+//     }
+//   })
 
 export default router
